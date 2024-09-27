@@ -1,0 +1,1699 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ExecutableTestSuite xmlns="http://www.interactive-instruments.de/etf/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="EID8bbf0a77-7d29-453b-ad77-99bd66cba927" xsi:schemaLocation="http://www.interactive-instruments.de/etf/2.0 ../../schema/model/resultSet.xsd">
+  <itemHash>bQ==</itemHash>
+  <remoteResource>http://github.com/inspire-eu-validation/ets-repository/metadata/iso</remoteResource>
+  <localPath>/auto</localPath>
+  <label>Soilwise Profile ETS</label>
+  <description><![CDATA[This test was generated automatically from a Schema profile in haleconnect]]></description>
+  <reference>../../inspire-md-bsxets.xq</reference>
+  <version>1.0.0</version>
+  <author>Thorsten Reitz</author>
+  <creationDate>2024-09-27T07:35:40.953Z</creationDate>
+  <lastEditor>Thorsten Reitz</lastEditor>
+  <lastUpdateDate>2024-09-27T07:36:32.649Z</lastUpdateDate>
+  <tags>
+    <tag ref="EIDfe1f3796-0ebf-4960-a6f7-f935e087fa4c"/>
+  </tags>
+  <testDriver ref="EID4dddc9e2-1b21-40b7-af70-6a2d156ad130"/>
+  <translationTemplateBundle ref="EID70a263c0-0ad7-42f2-9d4d-0d8a4ca71b52"/>
+  <ParameterList name="ETF Standard Parameters for XML test objects">
+    <parameter name="files_to_test" required="true">
+      <defaultValue>.*</defaultValue>
+      <allowedValues>.*</allowedValues>
+      <type>string</type>
+    </parameter>
+    <parameter name="tests_to_execute" required="false">
+      <defaultValue>.*</defaultValue>
+      <allowedValues>.*</allowedValues>
+      <type>string</type>
+    </parameter>
+  </ParameterList>
+  <supportedTestObjectTypes>
+    <testObjectType ref="EID5a60dded-0cb0-4977-9b06-16c6c2321d2e"/>
+  </supportedTestObjectTypes>
+  <testModules>
+    <TestModule id="EIDe080d72d-8e55-411f-96e0-820af2408ffb">
+      <label>Default test module</label>
+      <description><![CDATA[This is the default test module]]></description>
+      <parent ref="EID8bbf0a77-7d29-453b-ad77-99bd66cba927"/>
+      <testCases>
+        <TestCase id="EID783439f8-3ca3-4cb6-af7d-80549a1932d6">
+          <label>Komplexe Einschränkungen (Constraint Editor)</label>
+          <description><![CDATA[Komplexe Einschränkungen (Constraint Editor)]]></description>
+          <parent ref="EIDe080d72d-8e55-411f-96e0-820af2408ffb"/>
+          <testSteps>
+            <TestStep id="EID40985bb3-ccac-4fd5-8b9e-738b9ce8782a">
+              <label>Test</label>
+              <description><![CDATA[No description specified]]></description>
+              <parent ref="EID783439f8-3ca3-4cb6-af7d-80549a1932d6"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID57460d6c-b65d-4f76-979f-83902410bf23">
+                  <label>Test</label>
+                  <description><![CDATA[No description specified]]></description>
+                  <parent ref="EID40985bb3-ccac-4fd5-8b9e-738b9ce8782a"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>
+let $messages0 :=
+    (for $record in $db
+       let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+       let $typesFound := $record//*[local-name()='DS_Series' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+       for $typeFound in $typesFound 
+         let $ifPropertyCount := count($typeFound/*[local-name()='composedOf' and namespace-uri()='http://www.isotc211.org/2005/gmd']/data(@title))
+         return 
+       if ($ifPropertyCount eq 0) then 
+           local:addMessage('TR.conditionNotExistingValue', map { 'localName': 'title', 'namespace': 'http://www.w3.org/1999/xlink', 'fileIdentifier': $rid, 'filename': local:filename($record) })       else ()
+    )[position() le $limitErrors]
+let $messages1 :=
+    (for $record in $db
+       let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+       let $typesFound := $record//*[local-name()='DS_Series' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+       for $typeFound in $typesFound 
+         let $ifPropertyCount := count($typeFound/*[local-name()='composedOf' and namespace-uri()='http://www.isotc211.org/2005/gmd']/data(@href))
+         return 
+       if ($ifPropertyCount eq 0) then 
+           local:addMessage('TR.conditionNotExistingValue', map { 'localName': 'href', 'namespace': 'http://www.w3.org/1999/xlink', 'fileIdentifier': $rid, 'filename': local:filename($record) })       else ()
+    )[position() le $limitErrors]
+ let $messages := ($messages0, $messages1)
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+          </testSteps>
+        </TestCase>
+        <TestCase id="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570">
+          <label>Einschränkungen bei Objektarten</label>
+          <description><![CDATA[Einschränkungen bei Objektarten]]></description>
+          <parent ref="EIDe080d72d-8e55-411f-96e0-820af2408ffb"/>
+          <testSteps>
+            <TestStep id="EID05586b5e-aedb-4f2b-bde9-3f1c388955c0">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'CI_OnlineResource' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EIDc4222a21-8533-4c83-914d-18f68a300d92">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'function' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>download</li><li>information</li><li>offlineAccess</li><li>order</li><li>search</li></ul>]]></description>
+                  <parent ref="EID05586b5e-aedb-4f2b-bde9-3f1c388955c0"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('download', 'information', 'offlineAccess', 'order', 'search')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='CI_OnlineResource' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='function' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'CI_OnlineResource', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'function', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID0a160630-d960-4776-b019-0faac8faabb4">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_ExtendedElementInformation' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID2d95bfe1-ff6a-4cce-a3c5-b963fea8dc7d">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'obligation' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>optional</li><li>conditional</li><li>mandatory</li></ul>]]></description>
+                  <parent ref="EID0a160630-d960-4776-b019-0faac8faabb4"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('optional', 'conditional', 'mandatory')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_ExtendedElementInformation' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='obligation' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_ExtendedElementInformation', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'obligation', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EIDd01615c2-e503-4d42-8671-e17ae88d72bf">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_ExtendedElementInformation' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID95a1735a-4baa-4202-8dc0-c61681585786">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'dataType' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>unionClass</li><li>interfaceClass</li><li>enumeration</li><li>integer</li><li>codelistElement</li><li>aggregateClass</li><li>datatypeClass</li><li>abstractClass</li><li>specifiedClass</li><li>association</li><li>typeClass</li><li>codelist</li><li>metaClass</li><li>characterString</li><li>class</li></ul>]]></description>
+                  <parent ref="EIDd01615c2-e503-4d42-8671-e17ae88d72bf"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('unionClass', 'interfaceClass', 'enumeration', 'integer', 'codelistElement', 'aggregateClass', 'datatypeClass', 'abstractClass', 'specifiedClass', 'association', 'typeClass', 'codelist', 'metaClass', 'characterString', 'class')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_ExtendedElementInformation' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='dataType' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_ExtendedElementInformation', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'dataType', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID5913de8c-b52b-4e28-83c3-b370b23c0c32">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_Dimension' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID8e3a732f-3715-4848-b1ca-2cf311d7b7de">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'dimensionName' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>column</li><li>crossTrack</li><li>vertical</li><li>line</li><li>sample</li><li>track</li><li>row</li><li>time</li></ul>]]></description>
+                  <parent ref="EID5913de8c-b52b-4e28-83c3-b370b23c0c32"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('column', 'crossTrack', 'vertical', 'line', 'sample', 'track', 'row', 'time')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_Dimension' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='dimensionName' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_Dimension', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'dimensionName', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID6f3ae59a-8c59-4e23-b849-70c3a6267f1a">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'SV_PlatformSpecificServiceSpecification' and namespace 'http://www.isotc211.org/2005/srv']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EIDdf3f2845-4237-4846-a6de-1c13a1138360">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'DCP' and namespace 'http://www.isotc211.org/2005/srv' should have a value that corresponds to one from the following list: <br><ul><li>CORBA</li><li>COM</li><li>JAVA</li><li>WebServices</li><li>XML</li><li>SQL</li></ul>]]></description>
+                  <parent ref="EID6f3ae59a-8c59-4e23-b849-70c3a6267f1a"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('CORBA', 'COM', 'JAVA', 'WebServices', 'XML', 'SQL')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='SV_PlatformSpecificServiceSpecification' and namespace-uri()='http://www.isotc211.org/2005/srv']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='DCP' and namespace-uri()='http://www.isotc211.org/2005/srv']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'SV_PlatformSpecificServiceSpecification', 'namespace': 'http://www.isotc211.org/2005/srv', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'DCP', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID32d9e16e-b986-45cb-b876-9c41896eacbb">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'PT_Locale' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID93d64caa-3143-4e5b-9a1c-5f5f17ac145a">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'languageCode' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>French</li><li>English</li></ul>]]></description>
+                  <parent ref="EID32d9e16e-b986-45cb-b876-9c41896eacbb"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('French', 'English')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='PT_Locale' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='languageCode' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'PT_Locale', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'languageCode', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID2c545447-9ff6-4578-b1f0-dbce53ff454b">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'PT_Locale' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID2ef907c4-1266-430e-b8fe-fe1454fe36ef">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'country' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>United Kingdom</li><li>France</li></ul>]]></description>
+                  <parent ref="EID2c545447-9ff6-4578-b1f0-dbce53ff454b"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('United Kingdom', 'France')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='PT_Locale' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='country' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'PT_Locale', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'country', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID70c499b0-0925-4e0c-b012-f2569504b9d0">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'PT_Locale' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID4e15c98e-9b98-4aaf-98d3-75293aad9536">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'characterEncoding' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>8859part3</li><li>ucs2</li><li>8859part6</li><li>8859part4</li><li>eucKR</li><li>8859part1</li><li>ebcdic</li><li>usAscii</li><li>8859part15</li><li>8859part10</li><li>eucJP</li><li>8859part11</li><li>shiftJIS</li><li>GB2312</li><li>8859part16</li><li>utf16</li><li>8859part7</li><li>ucs4</li><li>8859part2</li><li>8859part9</li><li>8859part5</li><li>8859part8</li><li>8859part14</li><li>big5</li><li>utf7</li><li>utf8</li><li>jis</li><li>8859part13</li></ul>]]></description>
+                  <parent ref="EID70c499b0-0925-4e0c-b012-f2569504b9d0"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('8859part3', 'ucs2', '8859part6', '8859part4', 'eucKR', '8859part1', 'ebcdic', 'usAscii', '8859part15', '8859part10', 'eucJP', '8859part11', 'shiftJIS', 'GB2312', '8859part16', 'utf16', '8859part7', 'ucs4', '8859part2', '8859part9', '8859part5', '8859part8', '8859part14', 'big5', 'utf7', 'utf8', 'jis', '8859part13')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='PT_Locale' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='characterEncoding' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'PT_Locale', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'characterEncoding', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID627ce2c9-6eea-4aec-864f-cb2870fe94c1">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'SV_PortSpecification' and namespace 'http://www.isotc211.org/2005/srv']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EIDb1740397-162d-42de-80df-5678a42d84e1">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'binding' and namespace 'http://www.isotc211.org/2005/srv' should have a value that corresponds to one from the following list: <br><ul><li>CORBA</li><li>COM</li><li>JAVA</li><li>WebServices</li><li>XML</li><li>SQL</li></ul>]]></description>
+                  <parent ref="EID627ce2c9-6eea-4aec-864f-cb2870fe94c1"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('CORBA', 'COM', 'JAVA', 'WebServices', 'XML', 'SQL')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='SV_PortSpecification' and namespace-uri()='http://www.isotc211.org/2005/srv']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='binding' and namespace-uri()='http://www.isotc211.org/2005/srv']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'SV_PortSpecification', 'namespace': 'http://www.isotc211.org/2005/srv', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'binding', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID0aa45528-c74d-4da6-987d-96ae9801e23d">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'DQ_Scope' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID69b3b825-e82e-4ea2-82f3-5b96ac3ee129">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'level' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>attributeType</li><li>model</li><li>collectionHardware</li><li>collectionSession</li><li>feature</li><li>featureType</li><li>dimensionGroup</li><li>nonGeographicDataset</li><li>propertyType</li><li>dataset</li><li>series</li><li>attribute</li><li>software</li><li>service</li><li>tile</li><li>fieldSession</li></ul>]]></description>
+                  <parent ref="EID0aa45528-c74d-4da6-987d-96ae9801e23d"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('attributeType', 'model', 'collectionHardware', 'collectionSession', 'feature', 'featureType', 'dimensionGroup', 'nonGeographicDataset', 'propertyType', 'dataset', 'series', 'attribute', 'software', 'service', 'tile', 'fieldSession')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='DQ_Scope' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='level' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'DQ_Scope', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'level', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID3bd7110b-3568-420c-980e-6da1f62819be">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_Keywords' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EIDf3b2adee-edc7-4dd6-86bc-bf7e8394fa33">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'type' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>stratum</li><li>theme</li><li>discipline</li><li>place</li><li>temporal</li></ul>]]></description>
+                  <parent ref="EID3bd7110b-3568-420c-980e-6da1f62819be"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('stratum', 'theme', 'discipline', 'place', 'temporal')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_Keywords' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='type' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_Keywords', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'type', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID8d939634-fce6-4df6-9f3e-3e55edbf1ac6">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'SV_ServiceIdentification' and namespace 'http://www.isotc211.org/2005/srv']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EIDc762bc8c-6165-4b3a-9707-e774c25e8682">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'couplingType' and namespace 'http://www.isotc211.org/2005/srv' should have a value that corresponds to one from the following list: <br><ul><li>loose</li><li>mixed</li><li>tight</li></ul>]]></description>
+                  <parent ref="EID8d939634-fce6-4df6-9f3e-3e55edbf1ac6"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('loose', 'mixed', 'tight')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='SV_ServiceIdentification' and namespace-uri()='http://www.isotc211.org/2005/srv']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='couplingType' and namespace-uri()='http://www.isotc211.org/2005/srv']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'SV_ServiceIdentification', 'namespace': 'http://www.isotc211.org/2005/srv', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'couplingType', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID787f5c7f-455d-4267-a003-5c64858edc42">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_LegalConstraints' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID0ec4b694-057b-4535-bff6-ece06bfb7f83">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'accessConstraints' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>restricted</li><li>copyright</li><li>trademark</li><li>patentPending</li><li>intellectualPropertyRights</li><li>patent</li><li>license</li><li>otherRestrictions</li></ul>]]></description>
+                  <parent ref="EID787f5c7f-455d-4267-a003-5c64858edc42"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('restricted', 'copyright', 'trademark', 'patentPending', 'intellectualPropertyRights', 'patent', 'license', 'otherRestrictions')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_LegalConstraints' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='accessConstraints' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_LegalConstraints', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'accessConstraints', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID9c9198d6-f83f-49b8-892e-3bfad25d09ab">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_LegalConstraints' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID4e1fe67e-2164-4bfe-9541-5cc239e61194">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'useConstraints' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>restricted</li><li>copyright</li><li>trademark</li><li>patentPending</li><li>intellectualPropertyRights</li><li>patent</li><li>license</li><li>otherRestrictions</li></ul>]]></description>
+                  <parent ref="EID9c9198d6-f83f-49b8-892e-3bfad25d09ab"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('restricted', 'copyright', 'trademark', 'patentPending', 'intellectualPropertyRights', 'patent', 'license', 'otherRestrictions')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_LegalConstraints' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='useConstraints' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_LegalConstraints', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'useConstraints', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID10d855e0-d25c-43e9-acb8-7e6cf92f8530">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'AbstractMD_Identification' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID449b7acd-d4a4-41fe-ac79-963f01d619f3">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'status' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>planned</li><li>underDevelopment</li><li>historicalArchive</li><li>obsolete</li><li>onGoing</li><li>required</li><li>completed</li></ul>]]></description>
+                  <parent ref="EID10d855e0-d25c-43e9-acb8-7e6cf92f8530"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('planned', 'underDevelopment', 'historicalArchive', 'obsolete', 'onGoing', 'required', 'completed')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='AbstractMD_Identification' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='status' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'AbstractMD_Identification', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'status', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID65e71e11-e50f-4d8a-ae23-e7e469f8c242">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_AggregateInformation' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID01dfe4e8-9c34-418c-885e-1f7f32eded1a">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'associationType' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>partOfSeamlessDatabase</li><li>stereoMate</li><li>largerWorkCitation</li><li>source</li><li>crossReference</li></ul>]]></description>
+                  <parent ref="EID65e71e11-e50f-4d8a-ae23-e7e469f8c242"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('partOfSeamlessDatabase', 'stereoMate', 'largerWorkCitation', 'source', 'crossReference')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_AggregateInformation' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='associationType' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_AggregateInformation', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'associationType', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EIDa55bc2df-1cab-469c-8b9c-3a380845eb8c">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_AggregateInformation' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID39db6fcb-91aa-4c93-bbd0-51d833e066a2">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'initiativeType' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>operation</li><li>project</li><li>exercise</li><li>task</li><li>mission</li><li>process</li><li>program</li><li>collection</li><li>campaign</li><li>experiment</li><li>trial</li><li>sensor</li><li>platform</li><li>study</li><li>investigation</li></ul>]]></description>
+                  <parent ref="EIDa55bc2df-1cab-469c-8b9c-3a380845eb8c"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('operation', 'project', 'exercise', 'task', 'mission', 'process', 'program', 'collection', 'campaign', 'experiment', 'trial', 'sensor', 'platform', 'study', 'investigation')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_AggregateInformation' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='initiativeType' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_AggregateInformation', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'initiativeType', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID5b01490d-4f8d-42c1-875d-cf057fc6fe10">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'CI_Citation' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID4a014844-40fc-411e-b52c-5111fa48a785">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'presentationForm' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>mapHardcopy</li><li>videoHardcopy</li><li>profileHardcopy</li><li>documentDigital</li><li>modelDigital</li><li>documentHardcopy</li><li>modelHardcopy</li><li>videoDigital</li><li>mapDigital</li><li>profileDigital</li><li>imageHardcopy</li><li>tableDigital</li><li>imageDigital</li><li>tableHardcopy</li></ul>]]></description>
+                  <parent ref="EID5b01490d-4f8d-42c1-875d-cf057fc6fe10"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('mapHardcopy', 'videoHardcopy', 'profileHardcopy', 'documentDigital', 'modelDigital', 'documentHardcopy', 'modelHardcopy', 'videoDigital', 'mapDigital', 'profileDigital', 'imageHardcopy', 'tableDigital', 'imageDigital', 'tableHardcopy')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='CI_Citation' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='presentationForm' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'CI_Citation', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'presentationForm', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EIDd1251433-ea75-4b97-92bf-c236a970d3cb">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_GridSpatialRepresentation' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EIDf9adc3e7-4fb1-44be-8a3a-072ce4b015e8">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'cellGeometry' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>area</li><li>point</li></ul>]]></description>
+                  <parent ref="EIDd1251433-ea75-4b97-92bf-c236a970d3cb"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('area', 'point')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_GridSpatialRepresentation' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='cellGeometry' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_GridSpatialRepresentation', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'cellGeometry', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EIDf3d14ad4-89e7-4fbc-90d3-c000c9e1a39a">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_CoverageDescription' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID0bba8e4c-9e30-47e5-a510-16a82c21df95">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'contentType' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>thematicClassification</li><li>image</li><li>physicalMeasurement</li></ul>]]></description>
+                  <parent ref="EIDf3d14ad4-89e7-4fbc-90d3-c000c9e1a39a"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('thematicClassification', 'image', 'physicalMeasurement')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_CoverageDescription' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='contentType' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_CoverageDescription', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'contentType', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID3707c2a6-e61a-41f4-adf0-5d858112025a">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_Georectified' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EIDc83cae5b-9f82-4c3c-8efa-1e89185e876a">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'pointInPixel' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>lowerLeft</li><li>center</li><li>lowerRight</li><li>upperRight</li><li>upperLeft</li></ul>]]></description>
+                  <parent ref="EID3707c2a6-e61a-41f4-adf0-5d858112025a"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('lowerLeft', 'center', 'lowerRight', 'upperRight', 'upperLeft')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_Georectified' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='pointInPixel' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_Georectified', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'pointInPixel', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EIDaf4581eb-63bf-4350-935b-b7cf7060a49d">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'CI_Date' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID332f6191-50cc-42fe-b09c-34aad881943e">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'dateType' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>creation</li><li>publication</li><li>revision</li></ul>]]></description>
+                  <parent ref="EIDaf4581eb-63bf-4350-935b-b7cf7060a49d"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('creation', 'publication', 'revision')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='CI_Date' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='dateType' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'CI_Date', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'dateType', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID5017b243-3785-4fed-84cd-789e74a6308f">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_Metadata' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EIDd13b636a-dede-4310-8e01-9452344a9bdd">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'characterSet' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>8859part3</li><li>ucs2</li><li>8859part6</li><li>8859part4</li><li>eucKR</li><li>8859part1</li><li>ebcdic</li><li>usAscii</li><li>8859part15</li><li>8859part10</li><li>eucJP</li><li>8859part11</li><li>shiftJIS</li><li>GB2312</li><li>8859part16</li><li>utf16</li><li>8859part7</li><li>ucs4</li><li>8859part2</li><li>8859part9</li><li>8859part5</li><li>8859part8</li><li>8859part14</li><li>big5</li><li>utf7</li><li>utf8</li><li>jis</li><li>8859part13</li></ul>]]></description>
+                  <parent ref="EID5017b243-3785-4fed-84cd-789e74a6308f"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('8859part3', 'ucs2', '8859part6', '8859part4', 'eucKR', '8859part1', 'ebcdic', 'usAscii', '8859part15', '8859part10', 'eucJP', '8859part11', 'shiftJIS', 'GB2312', '8859part16', 'utf16', '8859part7', 'ucs4', '8859part2', '8859part9', '8859part5', '8859part8', '8859part14', 'big5', 'utf7', 'utf8', 'jis', '8859part13')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_Metadata' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='characterSet' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_Metadata', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'characterSet', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID4590ea9f-384c-491d-ab19-aadc5551e795">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_Metadata' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID304ebd26-950c-44a7-a0d9-710e188152f2">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'hierarchyLevel' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>attributeType</li><li>model</li><li>collectionHardware</li><li>collectionSession</li><li>feature</li><li>featureType</li><li>dimensionGroup</li><li>nonGeographicDataset</li><li>propertyType</li><li>dataset</li><li>series</li><li>attribute</li><li>software</li><li>service</li><li>tile</li><li>fieldSession</li></ul>]]></description>
+                  <parent ref="EID4590ea9f-384c-491d-ab19-aadc5551e795"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('attributeType', 'model', 'collectionHardware', 'collectionSession', 'feature', 'featureType', 'dimensionGroup', 'nonGeographicDataset', 'propertyType', 'dataset', 'series', 'attribute', 'software', 'service', 'tile', 'fieldSession')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_Metadata' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='hierarchyLevel' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_Metadata', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'hierarchyLevel', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID0920d4ce-d4ce-45ab-a1b4-ddab2e260923">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_ImageDescription' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EIDbc731040-0844-4888-b50c-6e001f10530c">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'imagingCondition' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>terrainMasking</li><li>heavySmokeOrDust</li><li>rain</li><li>snow</li><li>blurredImage</li><li>semiDarkness</li><li>night</li><li>shadow</li><li>cloud</li><li>degradingObliquity</li><li>fog</li></ul>]]></description>
+                  <parent ref="EID0920d4ce-d4ce-45ab-a1b4-ddab2e260923"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('terrainMasking', 'heavySmokeOrDust', 'rain', 'snow', 'blurredImage', 'semiDarkness', 'night', 'shadow', 'cloud', 'degradingObliquity', 'fog')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_ImageDescription' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='imagingCondition' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_ImageDescription', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'imagingCondition', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID9b9238f0-fe8e-4324-9927-2e85529d02c1">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'SV_OperationMetadata' and namespace 'http://www.isotc211.org/2005/srv']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID0dcd8687-1be0-4ce4-9b85-71587c2205ca">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'DCP' and namespace 'http://www.isotc211.org/2005/srv' should have a value that corresponds to one from the following list: <br><ul><li>CORBA</li><li>COM</li><li>JAVA</li><li>WebServices</li><li>XML</li><li>SQL</li></ul>]]></description>
+                  <parent ref="EID9b9238f0-fe8e-4324-9927-2e85529d02c1"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('CORBA', 'COM', 'JAVA', 'WebServices', 'XML', 'SQL')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='SV_OperationMetadata' and namespace-uri()='http://www.isotc211.org/2005/srv']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='DCP' and namespace-uri()='http://www.isotc211.org/2005/srv']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'SV_OperationMetadata', 'namespace': 'http://www.isotc211.org/2005/srv', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'DCP', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EIDb8bdfedb-5b06-4a48-b38a-2fad6ff5bf79">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_GeometricObjects' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID296ffec2-bfc0-4833-aa6d-5a2340112e8d">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'geometricObjectType' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>complex</li><li>point</li><li>composite</li><li>curve</li><li>solid</li><li>surface</li></ul>]]></description>
+                  <parent ref="EIDb8bdfedb-5b06-4a48-b38a-2fad6ff5bf79"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('complex', 'point', 'composite', 'curve', 'solid', 'surface')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_GeometricObjects' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='geometricObjectType' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_GeometricObjects', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'geometricObjectType', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID9abe3849-0d63-4d11-bf27-b5e796da6286">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'AbstractDQ_Element' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID6a901f76-1e3f-466c-805f-2f9fc75c727d">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'evaluationMethodType' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>directInternal</li><li>directExternal</li><li>indirect</li></ul>]]></description>
+                  <parent ref="EID9abe3849-0d63-4d11-bf27-b5e796da6286"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('directInternal', 'directExternal', 'indirect')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='AbstractDQ_Element' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='evaluationMethodType' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'AbstractDQ_Element', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'evaluationMethodType', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID5738d768-14a1-42a3-9ac5-0077cba1d7e7">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_DataIdentification' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID3df622c5-0367-48b5-95a0-c116da322e72">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'spatialRepresentationType' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>tin</li><li>stereoModel</li><li>video</li><li>vector</li><li>textTable</li><li>grid</li></ul>]]></description>
+                  <parent ref="EID5738d768-14a1-42a3-9ac5-0077cba1d7e7"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('tin', 'stereoModel', 'video', 'vector', 'textTable', 'grid')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_DataIdentification' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='spatialRepresentationType' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_DataIdentification', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'spatialRepresentationType', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID139a4ed1-33f9-46ff-b12f-46c193395a8a">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_DataIdentification' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EIDbc755662-708e-45be-a425-960b4033ad10">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'characterSet' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>8859part3</li><li>ucs2</li><li>8859part6</li><li>8859part4</li><li>eucKR</li><li>8859part1</li><li>ebcdic</li><li>usAscii</li><li>8859part15</li><li>8859part10</li><li>eucJP</li><li>8859part11</li><li>shiftJIS</li><li>GB2312</li><li>8859part16</li><li>utf16</li><li>8859part7</li><li>ucs4</li><li>8859part2</li><li>8859part9</li><li>8859part5</li><li>8859part8</li><li>8859part14</li><li>big5</li><li>utf7</li><li>utf8</li><li>jis</li><li>8859part13</li></ul>]]></description>
+                  <parent ref="EID139a4ed1-33f9-46ff-b12f-46c193395a8a"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('8859part3', 'ucs2', '8859part6', '8859part4', 'eucKR', '8859part1', 'ebcdic', 'usAscii', '8859part15', '8859part10', 'eucJP', '8859part11', 'shiftJIS', 'GB2312', '8859part16', 'utf16', '8859part7', 'ucs4', '8859part2', '8859part9', '8859part5', '8859part8', '8859part14', 'big5', 'utf7', 'utf8', 'jis', '8859part13')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_DataIdentification' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='characterSet' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_DataIdentification', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'characterSet', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EIDa9999283-0521-40fb-a2d4-4f2a7e296750">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_DataIdentification' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID76120a63-9f52-4eed-9c95-a8cc5dcf358b">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'topicCategory' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>biota</li><li>climatologyMeteorologyAtmosphere</li><li>economy</li><li>health</li><li>farming</li><li>location</li><li>inlandWaters</li><li>environment</li><li>society</li><li>transportation</li><li>utilitiesCommunication</li><li>elevation</li><li>intelligenceMilitary</li><li>geoscientificInformation</li><li>structure</li><li>oceans</li><li>imageryBaseMapsEarthCover</li><li>boundaries</li><li>planningCadastre</li></ul>]]></description>
+                  <parent ref="EIDa9999283-0521-40fb-a2d4-4f2a7e296750"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('biota', 'climatologyMeteorologyAtmosphere', 'economy', 'health', 'farming', 'location', 'inlandWaters', 'environment', 'society', 'transportation', 'utilitiesCommunication', 'elevation', 'intelligenceMilitary', 'geoscientificInformation', 'structure', 'oceans', 'imageryBaseMapsEarthCover', 'boundaries', 'planningCadastre')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_DataIdentification' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='topicCategory' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_DataIdentification', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'topicCategory', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EIDfe401f61-1291-400f-8923-5880f6a99dfe">
+              <label>Mandatory type test</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_DataIdentification' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EIDbd889e45-a922-475e-b616-7c2267ce800c">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The type with localName 'MD_DataIdentification' and namespace 'http://www.isotc211.org/2005/gmd' should be present in the file]]></description>
+                  <parent ref="EIDfe401f61-1291-400f-8923-5880f6a99dfe"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $messages :=
+    (for $record in $db
+       let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+       let $title := count($record//*[local-name()='MD_DataIdentification' and namespace-uri()='http://www.isotc211.org/2005/gmd'])
+       return
+       if (not($title)) then
+        local:addMessage('TR.missingMandatoryTypeError', map { 'localName': 'MD_DataIdentification', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record) })
+       else ()
+    )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID526aefcf-f3c3-4651-bfd1-02c03ab5a6e5">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'AbstractCT_Catalogue' and namespace 'http://www.isotc211.org/2005/gmx']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID71c2a025-26df-4bc9-bc0c-27955702d2a4">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'characterSet' and namespace 'http://www.isotc211.org/2005/gmx' should have a value that corresponds to one from the following list: <br><ul><li>8859part3</li><li>ucs2</li><li>8859part6</li><li>8859part4</li><li>eucKR</li><li>8859part1</li><li>ebcdic</li><li>usAscii</li><li>8859part15</li><li>8859part10</li><li>eucJP</li><li>8859part11</li><li>shiftJIS</li><li>GB2312</li><li>8859part16</li><li>utf16</li><li>8859part7</li><li>ucs4</li><li>8859part2</li><li>8859part9</li><li>8859part5</li><li>8859part8</li><li>8859part14</li><li>big5</li><li>utf7</li><li>utf8</li><li>jis</li><li>8859part13</li></ul>]]></description>
+                  <parent ref="EID526aefcf-f3c3-4651-bfd1-02c03ab5a6e5"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('8859part3', 'ucs2', '8859part6', '8859part4', 'eucKR', '8859part1', 'ebcdic', 'usAscii', '8859part15', '8859part10', 'eucJP', '8859part11', 'shiftJIS', 'GB2312', '8859part16', 'utf16', '8859part7', 'ucs4', '8859part2', '8859part9', '8859part5', '8859part8', '8859part14', 'big5', 'utf7', 'utf8', 'jis', '8859part13')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='AbstractCT_Catalogue' and namespace-uri()='http://www.isotc211.org/2005/gmx']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='characterSet' and namespace-uri()='http://www.isotc211.org/2005/gmx']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'AbstractCT_Catalogue', 'namespace': 'http://www.isotc211.org/2005/gmx', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'characterSet', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID7c873813-5d76-4777-bd7e-7ae758c19042">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_SecurityConstraints' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EIDafa37d4c-92c9-4aaf-ab8e-cffef0229df6">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'classification' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>restricted</li><li>unclassified</li><li>confidential</li><li>secret</li><li>topSecret</li></ul>]]></description>
+                  <parent ref="EID7c873813-5d76-4777-bd7e-7ae758c19042"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('restricted', 'unclassified', 'confidential', 'secret', 'topSecret')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_SecurityConstraints' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='classification' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_SecurityConstraints', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'classification', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID4a2c97ce-91a4-46f2-87e1-4cbea266d1c9">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_MaintenanceInformation' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID6fa6c008-c370-460e-a0f3-df034b90b2d6">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'maintenanceAndUpdateFrequency' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>irregular</li><li>continual</li><li>daily</li><li>biannually</li><li>monthly</li><li>quarterly</li><li>asNeeded</li><li>notPlanned</li><li>weekly</li><li>fortnightly</li><li>annually</li><li>unknown</li></ul>]]></description>
+                  <parent ref="EID4a2c97ce-91a4-46f2-87e1-4cbea266d1c9"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('irregular', 'continual', 'daily', 'biannually', 'monthly', 'quarterly', 'asNeeded', 'notPlanned', 'weekly', 'fortnightly', 'annually', 'unknown')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_MaintenanceInformation' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='maintenanceAndUpdateFrequency' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_MaintenanceInformation', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'maintenanceAndUpdateFrequency', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EIDc76ba202-d6d3-4798-9e2f-3fa30f19bc64">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_MaintenanceInformation' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EIDa53204d3-ebb8-423f-80a7-ecbb8214bd60">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'updateScope' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>attributeType</li><li>model</li><li>collectionHardware</li><li>collectionSession</li><li>feature</li><li>featureType</li><li>dimensionGroup</li><li>nonGeographicDataset</li><li>propertyType</li><li>dataset</li><li>series</li><li>attribute</li><li>software</li><li>service</li><li>tile</li><li>fieldSession</li></ul>]]></description>
+                  <parent ref="EIDc76ba202-d6d3-4798-9e2f-3fa30f19bc64"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('attributeType', 'model', 'collectionHardware', 'collectionSession', 'feature', 'featureType', 'dimensionGroup', 'nonGeographicDataset', 'propertyType', 'dataset', 'series', 'attribute', 'software', 'service', 'tile', 'fieldSession')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_MaintenanceInformation' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='updateScope' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_MaintenanceInformation', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'updateScope', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID53d6ba83-514d-437d-b85f-de5bb0a0b5e2">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_Medium' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EIDdf567ba8-ff83-4610-81e8-3d40598420fc">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'name' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>telephoneLink</li><li>7trackTape</li><li>9trackType</li><li>3490Cartridge</li><li>5quarterInchFloppy</li><li>1quarterInchCartridgeTape</li><li>8mmCartridgeTape</li><li>digitalLinearTape</li><li>dvdRom</li><li>3480Cartridge</li><li>dvd</li><li>3halfInchFloppy</li><li>3580Cartridge</li><li>4mmCartridgeTape</li><li>cdRom</li><li>satellite</li><li>onLine</li><li>hardcopy</li></ul>]]></description>
+                  <parent ref="EID53d6ba83-514d-437d-b85f-de5bb0a0b5e2"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('telephoneLink', '7trackTape', '9trackType', '3490Cartridge', '5quarterInchFloppy', '1quarterInchCartridgeTape', '8mmCartridgeTape', 'digitalLinearTape', 'dvdRom', '3480Cartridge', 'dvd', '3halfInchFloppy', '3580Cartridge', '4mmCartridgeTape', 'cdRom', 'satellite', 'onLine', 'hardcopy')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_Medium' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='name' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_Medium', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'name', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID4aed37e5-6106-4d8d-98df-b345019af705">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_Medium' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID813a7a5e-4710-4874-9960-0bf8716d27e2">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'mediumFormat' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>iso9660RockRidge</li><li>cpio</li><li>iso9660AppleHFS</li><li>iso9660</li><li>tar</li><li>highSierra</li></ul>]]></description>
+                  <parent ref="EID4aed37e5-6106-4d8d-98df-b345019af705"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('iso9660RockRidge', 'cpio', 'iso9660AppleHFS', 'iso9660', 'tar', 'highSierra')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_Medium' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='mediumFormat' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_Medium', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'mediumFormat', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EIDbebbb9d7-5fc3-430a-958a-7ebaa2ded142">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'MD_VectorSpatialRepresentation' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID47cbbab6-e134-495a-b78a-eddf983096a1">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'topologyLevel' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>fullPlanarGraph</li><li>geometryOnly</li><li>surfaceGraph</li><li>fullSurfaceGraph</li><li>topology1D</li><li>planarGraph</li><li>fullTopology3D</li><li>abstract</li><li>topology3D</li></ul>]]></description>
+                  <parent ref="EIDbebbb9d7-5fc3-430a-958a-7ebaa2ded142"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('fullPlanarGraph', 'geometryOnly', 'surfaceGraph', 'fullSurfaceGraph', 'topology1D', 'planarGraph', 'fullTopology3D', 'abstract', 'topology3D')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='MD_VectorSpatialRepresentation' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='topologyLevel' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'MD_VectorSpatialRepresentation', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'topologyLevel', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EIDc0cb5e31-70ae-4135-9c3c-7e7e5040389e">
+              <label>label</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'CI_ResponsibleParty' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID0f44cdc5-44c3-4ace-ad76-5abf3621bfab">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The property with localName 'role' and namespace 'http://www.isotc211.org/2005/gmd' should have a value that corresponds to one from the following list: <br><ul><li>custodian</li><li>processor</li><li>publisher</li><li>originator</li><li>pointOfContact</li><li>user</li><li>distributor</li><li>resourceProvider</li><li>owner</li><li>principalInvestigator</li><li>author</li></ul>]]></description>
+                  <parent ref="EIDc0cb5e31-70ae-4135-9c3c-7e7e5040389e"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $codes := ('custodian', 'processor', 'publisher', 'originator', 'pointOfContact', 'user', 'distributor', 'resourceProvider', 'owner', 'principalInvestigator', 'author')
+let $messages :=
+  (for $record in $db
+     let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+     let $typesFound := $record//*[local-name()='CI_ResponsibleParty' and namespace-uri()='http://www.isotc211.org/2005/gmd']
+     for $typeFound in $typesFound
+       let $propertyFound := $typeFound/*[local-name()='role' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/data(@codeListValue)
+       return
+         if ($propertyFound and not($propertyFound = $codes)) then
+           local:addMessage('TR.invalidPropertyValueError', map { 'localName': 'CI_ResponsibleParty', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record), 'valueFound': $propertyFound, 'propName': 'role', 'allowedValues': string-join( $codes, ', ') })
+ else ()
+  )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+            <TestStep id="EID501611b0-ee93-4902-a5eb-027587f89996">
+              <label>Mandatory type test</label>
+              <description><![CDATA[Constraints TestCase for Feature Type with name 'LI_Lineage' and namespace 'http://www.isotc211.org/2005/gmd']]></description>
+              <parent ref="EIDfe88aaf0-7f0a-485b-aff0-3abc1a023570"/>
+              <statementForExecution>not applicable</statementForExecution>
+              <testItemType ref="EIDf483e8e8-06b9-4900-ab36-adad0d7f22f0"/>
+              <testAssertions>
+                <TestAssertion id="EID4a8bc8a5-5374-4e1c-802e-e2bd8d95fc0a">
+                  <label>TestAssertion</label>
+                  <description><![CDATA[The type with localName 'LI_Lineage' and namespace 'http://www.isotc211.org/2005/gmd' should be present in the file]]></description>
+                  <parent ref="EID501611b0-ee93-4902-a5eb-027587f89996"/>
+                  <expectedResult>NOT_APPLICABLE</expectedResult>
+                  <expression>let $messages :=
+    (for $record in $db
+       let $rid := $record//*[local-name()='fileIdentifier' and namespace-uri()='http://www.isotc211.org/2005/gmd']/*/text()
+       let $title := count($record//*[local-name()='LI_Lineage' and namespace-uri()='http://www.isotc211.org/2005/gmd'])
+       return
+       if (not($title)) then
+        local:addMessage('TR.missingMandatoryTypeError', map { 'localName': 'LI_Lineage', 'namespace': 'http://www.isotc211.org/2005/gmd', 'fileIdentifier': $rid, 'filename': local:filename($record) })
+       else ()
+    )[position() le $limitErrors]
+return
+(if ($messages) then 'FAILED' else 'PASSED',
+ local:error-statistics('TR.recordsWithErrors', count(fn:distinct-values($messages//etf:argument[@token='id']/text()))),
+ $messages)</expression>
+                  <testItemType ref="EIDf0edc596-49d2-48d6-a1a1-1ac581dcde0a"/>
+                  <translationTemplates>
+                    <translationTemplate ref="TR.recordsWithErrors"/>
+                    <translationTemplate ref="TR.missingTypeContentError"/>
+                    <translationTemplate ref="TR.missingMandatoryTypeError"/>
+                    <translationTemplate ref="TR.invalidPropertyCardinalityError"/>
+                    <translationTemplate ref="TR.invalidPropertyValueError"/>
+                  </translationTemplates>
+                </TestAssertion>
+              </testAssertions>
+            </TestStep>
+          </testSteps>
+        </TestCase>
+      </testCases>
+    </TestModule>
+  </testModules>
+</ExecutableTestSuite>
