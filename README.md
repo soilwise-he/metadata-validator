@@ -1,4 +1,13 @@
-# metadata-validator
-A component which validates metadata records on completeness
+# Metadata validator
 
-You will need to set up a running instance of the ETF to run your executable test suite file. Visit the ETF GitHub page (https://github.com/interactive-instruments/etf-webapp) for more information.
+A component which validates metadata records on completeness.
+
+In the grant agreement a [model-based testing](https://en.wikipedia.org/wiki/Model-based_testing) approach, using ATS/ETS is suggested.
+
+In this repository we aim to start the ATS developments and later ETS.
+
+
+
+
+
+
