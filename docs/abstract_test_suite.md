@@ -15,9 +15,9 @@ The elements below are tested on being available in the suggested cardinality an
 | publisher | contact#distributor | 0-n | str or uri | | | 
 | coverage-temporal | extent#temporal | 0-n | date-period | | | 
 | coverage-spatial | extent#spatial | 0-n | str, uri or bbox | | | 
-| rights | ? | 0-1 | str or uri | | | 
-| license | otherconstraints | 0-1 | str or uri | | | 
-| subject | keyword | 0-n | str or uri | | | 
+| rights | constraints | 0-1 | str or uri | | | 
+| license | constraints | 0-1 | str or uri | | | 
+| subject | keyword/topiccategory | 0-n | str or uri | | | 
 | type | hierarchylevel | 1-1 | str or uri | | | 
 | format | format | 0-1 | str or uri | | | 
 
