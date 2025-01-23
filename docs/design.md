@@ -82,7 +82,7 @@ Two tables, related via record hash, because the result is stored per indicator.
 Validation-results
 
 | record-hash (str) | result-summary (int) | date (date) | 
-| --- | --- | --- | --- |
+| --- | --- | --- |
 | UaE4GeF | 64 | 2025-01-12T11-06-34Z | 
 
 Validation-by-indicator
