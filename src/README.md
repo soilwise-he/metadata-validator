@@ -18,9 +18,9 @@ some records may fail ingest and will not be validated.
 | language | 5 |
 | abstract | 20 |
 | keywords | 10 |
-| time_begin | 5 |
-| time_end | 5 |
-| otherconstraints | 5 |
+| temporal_extent | 5 |
+| spatial_extent | 5 |
+| license (usage constraints) | 5 |
 | organization | 10 |
 | lineage | 5 |
 
