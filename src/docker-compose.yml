@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  validator:
+    image: docker.pkg.github.com/inspire-mif/helpdesk-validator/inspire-validator:2025.1.1
+    container_name: inspire-validator
+    ports:
+      - "8090:8090"
+    volumes:
+      - ~/etf:/etf
+    restart: always
+    # Optional: If you need to pass environment variables
+    # environment:
+    #   - ETF_VARS=value
