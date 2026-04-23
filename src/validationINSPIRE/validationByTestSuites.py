@@ -4,29 +4,61 @@ import time
 import json
 import zipfile
 import io
+import os
+import sys
 from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # --- Configuration ---
+def _load_label_list(env_var, default):
+    raw = os.environ.get(env_var)
+    if not raw:
+        return default
+    try:
+        value = json.loads(raw)
+        if not isinstance(value, list):
+            raise ValueError("expected a JSON array")
+        return value
+    except (json.JSONDecodeError, ValueError) as exc:
+        print(f"Error: {env_var} must be a JSON array of strings. {exc}")
+        sys.exit(1)
+
+_required = {
+    "POSTGRES_HOST": os.environ.get("POSTGRES_HOST"),
+    "POSTGRES_DB": os.environ.get("POSTGRES_DB"),
+    "POSTGRES_USER": os.environ.get("POSTGRES_USER"),
+    "POSTGRES_PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+}
+_missing = [k for k, v in _required.items() if not v]
+if _missing:
+    print(f"Error: required environment variables not set: {', '.join(_missing)}")
+    sys.exit(1)
+
 DB_CONFIG = {
-    "dbname": "soilwise",
-    "user": "soilwise",
-    "password": "soilwise",
-    "host": "localhost"
+    "dbname": _required["POSTGRES_DB"],
+    "user": _required["POSTGRES_USER"],
+    "password": _required["POSTGRES_PASSWORD"],
+    "host": _required["POSTGRES_HOST"],
+    "port": int(os.environ.get("POSTGRES_PORT", "5432"))
 }
 
-ETF_URL = "http://localhost:8090/validator"
+ETF_URL = os.environ.get("ETF_URL", "http://localhost:8090/validator")
 MAX_WORKERS = 5  # Number of concurrent validations to run at once
 
 # Target Labels for dynamic ID lookup
-SERVICE_MD = ["Common Requirements for ISO/TC 19139:2007 based INSPIRE metadata records.",
-              "Conformance Class 3: INSPIRE Spatial Data Service baseline metadata.",
-              "Conformance Class 4: INSPIRE Network Services metadata.",
-              "Conformance Class 4b: INSPIRE Network Services metadata for Monitoring."]
-DATASET_MD = ["Common Requirements for ISO/TC 19139:2007 based INSPIRE metadata records.",
-              "Conformance Class 1: INSPIRE data sets and data set series baseline metadata.",
-              "Conformance Class 2: INSPIRE data sets and data set series interoperability metadata.",
-              "Conformance Class 2b: INSPIRE data sets and data set series metadata for Monitoring",
-              "Conformance Class 8: INSPIRE data sets and data set series linked service metadata"]
+_DEFAULT_SERVICE_MD = ["Common Requirements for ISO/TC 19139:2007 based INSPIRE metadata records.",
+                       "Conformance Class 3: INSPIRE Spatial Data Service baseline metadata.",
+                       "Conformance Class 4: INSPIRE Network Services metadata.",
+                       "Conformance Class 4b: INSPIRE Network Services metadata for Monitoring."]
+_DEFAULT_DATASET_MD = ["Common Requirements for ISO/TC 19139:2007 based INSPIRE metadata records.",
+                       "Conformance Class 1: INSPIRE data sets and data set series baseline metadata.",
+                       "Conformance Class 2: INSPIRE data sets and data set series interoperability metadata.",
+                       "Conformance Class 2b: INSPIRE data sets and data set series metadata for Monitoring",
+                       "Conformance Class 8: INSPIRE data sets and data set series linked service metadata"]
+SERVICE_MD = _load_label_list("SERVICE_MD_LABELS", _DEFAULT_SERVICE_MD)
+DATASET_MD = _load_label_list("DATASET_MD_LABELS", _DEFAULT_DATASET_MD)
 
 
 def get_suite_ids(target_labels):
@@ -184,7 +216,7 @@ def main():
                 # 4. Insert Main Run Record into validation_runs
                 # We use RETURNING run_id to link the suite details
                 insert_run_query = """
-                    INSERT INTO harvest.validation_runs 
+                    INSERT INTO harvest.validation_runs
                     (metadata_identifier, status_passed, validation_timestamp, full_report_json)
                     VALUES (%s, %s, %s, %s) RETURNING run_id;
                 """

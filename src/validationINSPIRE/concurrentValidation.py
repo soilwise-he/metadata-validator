@@ -4,30 +4,62 @@ import time
 import json
 import zipfile
 import io
+import os
+import sys
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 
 from urllib3 import request
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # --- Configuration ---
-DB_CONFIG = {
-    "dbname": "soilwise",
-    "user": "soilwise",
-    "password": "soilwise",
-    "host": "localhost"
-}
-ETF_URL = "http://localhost:8090/validator"
-MAX_WORKERS = 3  # Number of concurrent validations to run at once
+def _load_label_list(env_var, default):
+    raw = os.environ.get(env_var)
+    if not raw:
+        return default
+    try:
+        value = json.loads(raw)
+        if not isinstance(value, list):
+            raise ValueError("expected a JSON array")
+        return value
+    except (json.JSONDecodeError, ValueError) as exc:
+        print(f"Error: {env_var} must be a JSON array of strings. {exc}")
+        sys.exit(1)
 
-SERVICE_MD = ["Common Requirements for ISO/TC 19139:2007 based INSPIRE metadata records.",
-              "Conformance Class 3: INSPIRE Spatial Data Service baseline metadata.",
-              "Conformance Class 4: INSPIRE Network Services metadata.",
-              "Conformance Class 4b: INSPIRE Network Services metadata for Monitoring."]
-DATASET_MD = ["Common Requirements for ISO/TC 19139:2007 based INSPIRE metadata records.",
-              "Conformance Class 1: INSPIRE data sets and data set series baseline metadata.",
-              "Conformance Class 2: INSPIRE data sets and data set series interoperability metadata.",
-              "Conformance Class 2b: INSPIRE data sets and data set series metadata for Monitoring",
-              "Conformance Class 8: INSPIRE data sets and data set series linked service metadata"]
+_required = {
+    "POSTGRES_HOST": os.environ.get("POSTGRES_HOST"),
+    "POSTGRES_DB": os.environ.get("POSTGRES_DB"),
+    "POSTGRES_USER": os.environ.get("POSTGRES_USER"),
+    "POSTGRES_PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+}
+_missing = [k for k, v in _required.items() if not v]
+if _missing:
+    print(f"Error: required environment variables not set: {', '.join(_missing)}")
+    sys.exit(1)
+
+DB_CONFIG = {
+    "dbname": _required["POSTGRES_DB"],
+    "user": _required["POSTGRES_USER"],
+    "password": _required["POSTGRES_PASSWORD"],
+    "host": _required["POSTGRES_HOST"],
+    "port": int(os.environ.get("POSTGRES_PORT", "5432"))
+}
+ETF_URL = os.environ.get("ETF_URL", "http://localhost:8090/validator")
+MAX_WORKERS = int(os.environ.get("MAX_WORKERS", "3"))  # Number of concurrent validations to run at once
+
+_DEFAULT_SERVICE_MD = ["Common Requirements for ISO/TC 19139:2007 based INSPIRE metadata records.",
+                       "Conformance Class 3: INSPIRE Spatial Data Service baseline metadata.",
+                       "Conformance Class 4: INSPIRE Network Services metadata.",
+                       "Conformance Class 4b: INSPIRE Network Services metadata for Monitoring."]
+_DEFAULT_DATASET_MD = ["Common Requirements for ISO/TC 19139:2007 based INSPIRE metadata records.",
+                       "Conformance Class 1: INSPIRE data sets and data set series baseline metadata.",
+                       "Conformance Class 2: INSPIRE data sets and data set series interoperability metadata.",
+                       "Conformance Class 2b: INSPIRE data sets and data set series metadata for Monitoring",
+                       "Conformance Class 8: INSPIRE data sets and data set series linked service metadata"]
+SERVICE_MD = _load_label_list("SERVICE_MD_LABELS", _DEFAULT_SERVICE_MD)
+DATASET_MD = _load_label_list("DATASET_MD_LABELS", _DEFAULT_DATASET_MD)
 
 def get_suite_ids(target_labels):
     """Fetches ETS IDs based on the labels provided."""
@@ -125,7 +157,7 @@ def auto_cleanup_stuck_records():
         # REMOVES: Runs where status is missing in JSON (crashed runs)
         # These are usually the records that show up as NULL in harvest.items
         cur.execute("""
-            DELETE FROM harvest.validation_runs 
+            DELETE FROM harvest.validation_runs
             WHERE (full_report_json->'EtfItemCollection'->'testRuns'->'TestRun'->>'status') IS NULL;
         """)
         deleted = cur.rowcount
@@ -207,7 +239,7 @@ def process_single_record(record, service_suite_ids, dataset_suite_ids):
 
         # 4. Save to Database
         insert_run = """
-            INSERT INTO harvest.validation_runs 
+            INSERT INTO harvest.validation_runs
             (metadata_identifier, status_passed, validation_timestamp, full_report_json, result_html)
             VALUES (%s, %s, %s, %s, %s) RETURNING run_id;
         """
@@ -264,7 +296,7 @@ def main():
     conn = psycopg2.connect(**DB_CONFIG)
     cur = conn.cursor()
     query = """
-        SELECT identifier, resultobject, itemtype 
+        SELECT identifier, resultobject, itemtype
         FROM harvest.items
         WHERE insert_date > COALESCE(last_validation, '1900-01-01'::timestamp)
      """

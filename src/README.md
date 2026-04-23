@@ -58,11 +58,11 @@ python validate.py
 
 Process of validating metadata in soilwise project according to the INSPIRE requirements is done using tool [INSPIRE Reference validator](https://inspire.ec.europa.eu/validator/home/index.html) developed and managed by the European commmission. It supports INSPIRE ETS by default and is dockerized (althought not in the newest version). In soilwise, all metadata records are stored in PostgreSQL database. Tha validation itself uses ETF Validator API, called by the python script.
 
-### Prerequisities
-1. Setup and running instance of INSPIRE ETF Validator on the server. 
-1. Access to the PostgreSQL database. Script is written for the schema harvest with table items, accessing columns identifier, resultobject, itemtype and insert_date. 
-1. Setting up the database: before the first run of validation run script `create_new_trables.sql`. It creates two new tables and adds two columns to the items table.
-1. Setting up the script variables: folder validationINSPIRE contains scripts `getETS.py`, `validationByTestSuites.py` and `concurrentValidation.py`. First script returs the list of all available Executable Test Suites in the validator. Other two arefor validation itself. In the first part of each script, configure database connection credentials and list of desired Test Suites (there are predefined tests for dataset metadata and service metadata validation, which are used in the UI of the validator for dataset/series and network services metadata validation). In the concurrent validation script there must be also set up the number of threadas to work. Be careful about this, with too many workers, yu get out of RAM and BaseX will throw 500 on validation requests.
+### Prerequisites
+1. Setup and running instance of INSPIRE ETF Validator on the server.
+1. Access to the PostgreSQL database. Script is written for the schema harvest with table items, accessing columns identifier, resultobject, itemtype and insert_date.
+1. Setting up the database: the container applies `create_new_tables.sql` automatically on every startup (idempotent — safe to re-run). It adds two columns to `harvest.items` and creates `harvest.validation_runs` and `harvest.validation_suite_results`. The database user therefore needs DDL privileges on the `harvest` schema on the first run. To skip the bootstrap (e.g. if the schema is managed externally or the user has no DDL rights), set `SKIP_SCHEMA_BOOTSTRAP=1`. When running the scripts directly (outside the container), apply `create_new_tables.sql` manually once.
+1. All configuration is passed via environment variables — no source edits needed. See [Environment variables](#environment-variables) below.
 
 ### Seting up INSPIRE ETF Validator via Docker
 
@@ -82,7 +82,65 @@ As the INSPIRE ETF validator is setup and running and database is updated accord
 
 Script is written in a way it validates only those records, where the column `last_validation` is either empty, or with older datum than `insert_date`. Therefore, the first run of the validation validates all records in the database, but every other run validates only those that have been updated since the last validation run. That saves also some time.
 
-Recommended usage is to run the script quite regulary, based on the expected frequency of updates.
+Recommended usage is to run the script quite regularly, based on the expected frequency of updates.
+
+### Environment variables
+
+| Variable | Default | Required | Description |
+| --- | --- | --- | --- |
+| `POSTGRES_HOST` | — | yes | Database hostname |
+| `POSTGRES_PORT` | `5432` | no | Database port |
+| `POSTGRES_DB` | — | yes | Database name |
+| `POSTGRES_USER` | — | yes | Database user |
+| `POSTGRES_PASSWORD` | — | yes | Database password |
+| `ETF_URL` | `http://localhost:8090/validator` | no | Base URL of the INSPIRE ETF Validator |
+| `RUN_MODE` | `sequential` | no | `sequential` or `concurrent` (Docker entrypoint only) |
+| `MAX_WORKERS` | `3` | no | Thread count for concurrent mode |
+| `SERVICE_MD_LABELS` | built-in list | no | JSON array of service-metadata ETS labels to use |
+| `DATASET_MD_LABELS` | built-in list | no | JSON array of dataset-metadata ETS labels to use |
+| `SKIP_SCHEMA_BOOTSTRAP` | `0` | no | Set to `1` to skip the automatic schema bootstrap on container startup |
+
+A `.env` file in the working directory is loaded automatically (via python-dotenv) when running scripts directly.
+
+### Running via Docker
+
+The Docker image is published to `ghcr.io/soilwise-he/<repository>`. Pull the latest:
+
+```bash
+docker pull ghcr.io/soilwise-he/soilwise-catalog-enrichment:latest
+```
+
+Run sequential validation (default):
+
+```bash
+docker run --rm \
+  -e POSTGRES_HOST=db.example.org \
+  -e POSTGRES_DB=soilwise \
+  -e POSTGRES_USER=soilwise \
+  -e POSTGRES_PASSWORD=secret \
+  -e ETF_URL=http://etf.example.org:8090/validator \
+  ghcr.io/soilwise-he/soilwise-catalog-enrichment:latest
+```
+
+Run concurrent validation:
+
+```bash
+docker run --rm \
+  -e POSTGRES_HOST=db.example.org \
+  -e POSTGRES_DB=soilwise \
+  -e POSTGRES_USER=soilwise \
+  -e POSTGRES_PASSWORD=secret \
+  -e ETF_URL=http://etf.example.org:8090/validator \
+  -e RUN_MODE=concurrent \
+  -e MAX_WORKERS=5 \
+  ghcr.io/soilwise-he/soilwise-catalog-enrichment:latest
+```
+
+Pass a `.env` file instead of individual `-e` flags:
+
+```bash
+docker run --rm --env-file .env ghcr.io/soilwise-he/soilwise-catalog-enrichment:latest
+```
 
 ### What is the validation output
 
