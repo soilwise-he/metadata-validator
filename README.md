@@ -6,6 +6,7 @@ A component which validates metadata records on completeness.
 
 In the grant agreement a [model-based testing](https://en.wikipedia.org/wiki/Model-based_testing) approach, using ATS/ETS is suggested.
 
+
 On this topic, 2 components are available, which monitor aspects of metadata:
 - Metadata INSPIRE compliance checks the conformity to the INSPIRE regulation
 - Metadata completeness calculates a score based on selected populated metadata properties
