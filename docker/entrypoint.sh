@@ -1,6 +1,10 @@
 #!/bin/sh
 set -e
 
+if [ "${SKIP_SCHEMA_BOOTSTRAP:-0}" != "1" ]; then
+  python /app/bootstrap_schema.py
+fi
+
 MODE="${RUN_MODE:-sequential}"
 
 case "$MODE" in

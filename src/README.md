@@ -61,7 +61,7 @@ Process of validating metadata in soilwise project according to the INSPIRE requ
 ### Prerequisites
 1. Setup and running instance of INSPIRE ETF Validator on the server.
 1. Access to the PostgreSQL database. Script is written for the schema harvest with table items, accessing columns identifier, resultobject, itemtype and insert_date.
-1. Setting up the database: before the first run of validation run script `create_new_tables.sql`. It creates two new tables and adds two columns to the items table.
+1. Setting up the database: the container applies `create_new_tables.sql` automatically on every startup (idempotent — safe to re-run). It adds two columns to `harvest.items` and creates `harvest.validation_runs` and `harvest.validation_suite_results`. The database user therefore needs DDL privileges on the `harvest` schema on the first run. To skip the bootstrap (e.g. if the schema is managed externally or the user has no DDL rights), set `SKIP_SCHEMA_BOOTSTRAP=1`. When running the scripts directly (outside the container), apply `create_new_tables.sql` manually once.
 1. All configuration is passed via environment variables — no source edits needed. See [Environment variables](#environment-variables) below.
 
 ### Seting up INSPIRE ETF Validator via Docker
@@ -98,6 +98,7 @@ Recommended usage is to run the script quite regularly, based on the expected fr
 | `MAX_WORKERS` | `3` | no | Thread count for concurrent mode |
 | `SERVICE_MD_LABELS` | built-in list | no | JSON array of service-metadata ETS labels to use |
 | `DATASET_MD_LABELS` | built-in list | no | JSON array of dataset-metadata ETS labels to use |
+| `SKIP_SCHEMA_BOOTSTRAP` | `0` | no | Set to `1` to skip the automatic schema bootstrap on container startup |
 
 A `.env` file in the working directory is loaded automatically (via python-dotenv) when running scripts directly.
 

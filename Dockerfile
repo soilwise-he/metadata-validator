@@ -7,6 +7,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/validationINSPIRE/validationByTestSuites.py .
 COPY src/validationINSPIRE/concurrentValidation.py .
+COPY src/create_new_tables.sql .
+COPY docker/bootstrap_schema.py .
 COPY docker/entrypoint.sh /entrypoint.sh
 
 RUN useradd --system --no-create-home app && chown -R app /app

@@ -6,5 +6,4 @@ docs
 src/validationINSPIRE/.idea
 src/utils
 src/validate.py
-src/create_new_tables.sql
 src/docker-compose.yml
