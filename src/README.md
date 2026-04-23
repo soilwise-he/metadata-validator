@@ -104,10 +104,10 @@ A `.env` file in the working directory is loaded automatically (via python-doten
 
 ### Running via Docker
 
-The Docker image is published to `ghcr.io/soilwise-he/<repository>`. Pull the latest:
+The Docker image is published to `ghcr.io/soilwise-he/metadata-validator`. Pull the latest:
 
 ```bash
-docker pull ghcr.io/soilwise-he/soilwise-catalog-enrichment:latest
+docker pull ghcr.io/soilwise-he/metadata-validator:latest
 ```
 
 Run sequential validation (default):
@@ -119,7 +119,7 @@ docker run --rm \
   -e POSTGRES_USER=soilwise \
   -e POSTGRES_PASSWORD=secret \
   -e ETF_URL=http://etf.example.org:8090/validator \
-  ghcr.io/soilwise-he/soilwise-catalog-enrichment:latest
+  ghcr.io/soilwise-he/metadata-validator:latest
 ```
 
 Run concurrent validation:
@@ -133,13 +133,13 @@ docker run --rm \
   -e ETF_URL=http://etf.example.org:8090/validator \
   -e RUN_MODE=concurrent \
   -e MAX_WORKERS=5 \
-  ghcr.io/soilwise-he/soilwise-catalog-enrichment:latest
+  ghcr.io/soilwise-he/metadata-validator:latest
 ```
 
 Pass a `.env` file instead of individual `-e` flags:
 
 ```bash
-docker run --rm --env-file .env ghcr.io/soilwise-he/soilwise-catalog-enrichment:latest
+docker run --rm --env-file .env ghcr.io/soilwise-he/metadata-validator:latest
 ```
 
 ### What is the validation output
