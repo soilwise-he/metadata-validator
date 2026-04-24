@@ -10,10 +10,11 @@ authors:
   - family-names: "Med"
     given-names: "Michal"
     email: "medmicha@fel.cvut.cz"
+    affiliation: "Czech Technical University in Prague"
     orcid: "https://orcid.org/0000-0002-3844-426X"
   - family-names: "Snopková"
     given-names: "Dajana"
-    email: "dajana.snopkova@geogr.muni.cz"
+    email: "dajana.snopkova@muni.cz"
     affiliation: "Masaryk University"
     orcid: "https://orcid.org/0000-0002-0568-6211"
   - family-names: "Pavelka"
@@ -22,6 +23,7 @@ authors:
     affiliation: "Masaryk University"
     orcid: "https://orcid.org/0000-0003-4928-6831"
 repository-code: "https://github.com/soilwise-he/metadata-validator"
+url: "https://soilwise-he.eu"
 abstract: >-
   This repository contains the metadata validation components for the Horizon Europe SoilWise project, including the completeness validation, and compliance validation against INSPIRE metadata profile.
 keywords:
@@ -31,13 +33,12 @@ keywords:
   - "INSPIRE validation"
   - "ETS"
 license: "MIT License"
-version: 0.2.0
-date-released: 2026-04-15
-url: "https://github.com/soilwise-he/metadata-validator"
+version: "0.2.0"
+date-released: "2026-04-24"
 identifiers:
   - type: doi
     value: ""
-    description: "DOI for the validator (to be assigned)"
+    description: "DOI for the software (to be assigned)"
   - type: other
     value: "101112838"
     description: "EU Horizon grant agreement number"
@@ -45,8 +46,8 @@ references:
   - type: grant
     title: "SoilWise — Enabling Soil Data and Knowledge for Informed Decision-Making"
     authors:
-  - name: "European Commission"
+      - name: "European Commission"
     number: "101112838"
     institution:
-    name: "European Union"
+      name: "European Union"
     url: "https://doi.org/10.3030/101112838"
