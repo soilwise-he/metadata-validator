@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/soilwise-he/metadata-validator/compare/v0.3.0...v0.3.1) (2026-04-28)
+
+
+### Bug Fixes
+
+* limit metadata items for validation to source INSPIRE ([2c1c912](https://github.com/soilwise-he/metadata-validator/commit/2c1c9127db745cf770e5a80baf1aee9636f2470f))
+
 ## [0.3.0](https://github.com/soilwise-he/metadata-validator/compare/v0.2.0...v0.3.0) (2026-04-23)
 
 
