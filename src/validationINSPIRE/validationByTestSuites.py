@@ -190,7 +190,7 @@ def main():
         cur = conn.cursor()
 
         # Query the items to validate
-        query = "SELECT identifier, resultobject, itemtype FROM harvest.items"
+        query = "SELECT identifier, resultobject, itemtype FROM harvest.items WHERE source = 'INSPIRE'"
         cur.execute(query)
         records = cur.fetchall()
         print(f"Total records found: {len(records)}")
