@@ -298,7 +298,7 @@ def main():
     query = """
         SELECT identifier, resultobject, itemtype
         FROM harvest.items
-        WHERE insert_date > COALESCE(last_validation, '1900-01-01'::timestamp)
+        WHERE source = 'INSPIRE' AND insert_date > COALESCE(last_validation, '1900-01-01'::timestamp)
      """
     cur.execute(query)
     records = cur.fetchall()
