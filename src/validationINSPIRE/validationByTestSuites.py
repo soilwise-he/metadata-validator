@@ -6,6 +6,8 @@ import zipfile
 import io
 import os
 import sys
+import re
+import hashlib
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -72,11 +74,21 @@ def get_suite_ids(target_labels):
         print(f"Error fetching suites: {e}")
         return []
 
+def create_unique_safe_filename(identifier):
+    ident_str = str(identifier)
+    
+    # 1. Grab up to 50 safe characters for readability
+    readable_part = re.sub(r'[^A-Za-z0-9]', '_', ident_str)[:50]
+    
+    # 2. Create a short MD5 or SHA hash of the full ID to guarantee uniqueness
+    hash_part = hashlib.md5(ident_str.encode('utf-8')).hexdigest()[:8]
+    
+    return f"{readable_part}_{hash_part}"
 
 def create_test_object(identifier, xml_content):
     """Wraps XML in a ZIP buffer with a forced .xml extension."""
     url = f"{ETF_URL}/v2/TestObjects?action=upload"
-    clean_id = str(identifier).split('/')[-1].split('\\')[-1]
+    clean_id = create_unique_safe_filename(identifier)
     filename_inside_zip = f"{clean_id}.xml"
 
     zip_buffer = io.BytesIO()
