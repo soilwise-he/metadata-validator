@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/soilwise-he/metadata-validator/compare/v0.3.1...v0.4.0) (2026-04-29)
+
+
+### Features
+
+* enhance validation status and include HTML report ([6625ed8](https://github.com/soilwise-he/metadata-validator/commit/6625ed8d1571cf6856fa3872df76c6dc63b142d3))
+
 ## [0.3.1](https://github.com/soilwise-he/metadata-validator/compare/v0.3.0...v0.3.1) (2026-04-28)
 
 
