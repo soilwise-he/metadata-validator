@@ -170,11 +170,20 @@ def run_validation(test_object_id, suite_ids):
             continue
 
         # Terminal state reached
-        passed = (current_status == "PASSED")
+        passed = (current_status in  ["PASSED", "PASSED_MANUAL"])
+
+        html_report = ""
+        try:
+            html_resp = requests.get(f"{ETF_URL}/v2/TestRuns/{run_id}.html")
+            if html_resp.status_code == 200:
+                html_report = html_resp.text
+        except Exception as e:
+            print(f"Warning: Could not fetch HTML report: {e}")
+
         # Always analyze results to get the detailed suite array
         suites_results = analyze_results(data)
 
-        return passed, data, suites_results
+        return passed, data, suites_results, html_report
 
 def main():
     # 1. Fetch the Suite IDs once at the start
@@ -210,21 +219,22 @@ def main():
                     continue
 
                 # 3. Trigger Validation and wait for results
-                passed, full_report, suite_array = run_validation(obj_id, suite_ids)
+                passed, full_report, suite_array, html_report = run_validation(obj_id, suite_ids)
                 print(f"Run Finished. Overall Pass: {passed}")
 
                 # 4. Insert Main Run Record into validation_runs
                 # We use RETURNING run_id to link the suite details
                 insert_run_query = """
-                    INSERT INTO harvest.validation_runs
-                    (metadata_identifier, status_passed, validation_timestamp, full_report_json)
-                    VALUES (%s, %s, %s, %s) RETURNING run_id;
+                    INSERT INTO harvest.validation_runs 
+                    (metadata_identifier, status_passed, validation_timestamp, full_report_json, result_html)
+                    VALUES (%s, %s, %s, %s, %s) RETURNING run_id;
                 """
                 cur.execute(insert_run_query, (
                     identifier,
                     passed,
                     datetime.now(),
-                    json.dumps(full_report)
+                    json.dumps(full_report),
+                    html_report
                 ))
                 new_run_id = cur.fetchone()[0]
 
