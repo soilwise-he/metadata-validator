@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/soilwise-he/metadata-validator/compare/v0.4.0...v0.4.1) (2026-04-29)
+
+
+### Bug Fixes
+
+* use regexp to create valid clean_id ([7c350e2](https://github.com/soilwise-he/metadata-validator/commit/7c350e2f68dcc9ad74c888b0f679fb0ea9626b9a))
+
 ## [0.4.0](https://github.com/soilwise-he/metadata-validator/compare/v0.3.1...v0.4.0) (2026-04-29)
 
 
