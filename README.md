@@ -1,8 +1,8 @@
 # Metadata validator
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14924544.svg)](https://doi.org/10.5281/zenodo.14924544)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19887045.svg)](https://doi.org/10.5281/zenodo.19887045)
 
-A component which validates metadata records on completeness.
+The SoilWise Catalogue employs metadata validation mechanisms to provide additional information about metadata completeness, INSPIRE conformance and integrity.
 
 In the grant agreement a [model-based testing](https://en.wikipedia.org/wiki/Model-based_testing) approach, using ATS/ETS is suggested.
 
